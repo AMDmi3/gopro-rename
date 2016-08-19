@@ -63,3 +63,20 @@ init $TESTDIR/subdir
 ./gopro-rename -vr $TESTDIR
 [ "$(ls $TESTDIR/subdir)" = "$OUTFILES" ] && echo OK || { echo "Failed"; exit 1; }
 cleanup $TESTDIR
+
+echo "===> safety"
+init $TESTDIR
+touch $TESTDIR/GoPro_0001_01.MP4
+if ./gopro-rename $TESTDIR; then
+	echo Failed
+	exit 1
+else
+	echo OK
+fi
+cleanup $TESTDIR
+
+echo "===> force"
+init $TESTDIR
+touch $TESTDIR/GoPro_0001_01.MP4
+./gopro-rename -vf $TESTDIR && echo OK || { echo "Failed"; exit 1; }
+cleanup $TESTDIR
