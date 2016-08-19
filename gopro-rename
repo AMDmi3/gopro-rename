@@ -42,7 +42,7 @@ def TryRename(path, dryrun, force, verbose):
     target_path = GetRenamedFilename(path)
     if target_path != path:
         if dryrun or verbose:
-            print '%s -> %s' % (path, target_path)
+            print('%s -> %s' % (path, target_path))
         if os.path.exists(target_path) and not force:
             raise RuntimeError('target path %s exists' % target_path)
         if not dryrun:
