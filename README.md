@@ -43,10 +43,10 @@ match GoPro file naming convention are silently ignored.
 
 Additional flags:
 
-* **-n**, **--dry-run*** - do not rename files, just print renames to stderr
-* **-f**, **--force*** - rename file even if destination path exists
-* **-v**, **--verbose*** - print performed renames to stderr
-* **-r**, **-R**, **--recursive*** - process subdirectories recursively
+* **-n**, **--dry-run** - do not rename files, just print renames to stderr
+* **-f**, **--force** - rename file even if destination path exists
+* **-v**, **--verbose** - print performed renames to stderr
+* **-r**, **-R**, **--recursive** - process subdirectories recursively
 
 ## Requirements
 
