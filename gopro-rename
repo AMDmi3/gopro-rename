@@ -20,10 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from __future__ import print_function
 import argparse
 import os
 import ntpath
 import re
+import sys
 
 def GetRenamedFilename(path):
     dir, file = ntpath.split(path)
@@ -42,7 +44,7 @@ def TryRename(path, dryrun, force, verbose):
     target_path = GetRenamedFilename(path)
     if target_path != path:
         if dryrun or verbose:
-            print('%s -> %s' % (path, target_path))
+            print('%s -> %s' % (path, target_path), file=sys.stderr)
         if os.path.exists(target_path) and not force:
             raise RuntimeError('target path %s exists' % target_path)
         if not dryrun:
