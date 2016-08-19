@@ -54,12 +54,13 @@ def Process(path, dryrun, force, verbose, recursive):
     if os.path.isfile(path):
         TryRename(path, dryrun, force, verbose)
     elif os.path.isdir(path):
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                TryRename(os.path.join(root, file), dryrun, force, verbose)
-            if recursive:
-                for dir in dirs:
-                    Process(os.path.join(root, file), dryrun, force, verbose, recursive)
+        for entry in os.listdir(path):
+            if entry == '.' or entry == '..':
+                pass
+            elif os.path.isfile(os.path.join(path, entry)):
+                TryRename(os.path.join(path, entry), dryrun, force, verbose)
+            elif recursive and os.path.isdir(os.path.join(path, entry)):
+                Process(os.path.join(path, entry), dryrun, force, verbose, recursive)
 
 def Main():
     parser = argparse.ArgumentParser(description='Goes through files or directories specified on command line and renames files produced by GoPro cameras in a more usable and sortable way')
