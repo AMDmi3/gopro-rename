@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+#
+# Copyright (c) 2016 Dmitry Marakasov <amdmi3@amdmi3.ru>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+
+import argparse
+import os
+import ntpath
+import re
+
+def GetRenamedFilename(path):
+    dir, file = ntpath.split(path)
+
+    match = re.match('GOPR(\d{4})(\..*)', file)
+    if match:
+        return os.path.join(dir, 'GoPro_%04d_%02d%s' % (int(match.group(1)), 0, match.group(2)))
+
+    match = re.match('GP(\d{2})(\d{4})(\..*)', file)
+    if match:
+        return os.path.join(dir, 'GoPro_%04d_%02d%s' % (int(match.group(2)), int(match.group(1)), match.group(3)))
+
+    return path
+
+def TryRename(path, dryrun, force, verbose):
+    target_path = GetRenamedFilename(path)
+    if target_path != path:
+        if dryrun or verbose:
+            print '%s -> %s' % (path, target_path)
+        if os.path.exists(target_path) and not force:
+            raise RuntimeError('target path %s exists' % target_path)
+        if not dryrun:
+            os.rename(path, target_path)
+
+def Process(path, dryrun, force, verbose, recursive):
+    if os.path.isfile(path):
+        TryRename(path, dryrun, force, verbose)
+    elif os.path.isdir(path):
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                TryRename(os.path.join(root, file), dryrun, force, verbose)
+            if recursive:
+                for dir in dirs:
+                    Process(os.path.join(root, file), dryrun, force, verbose, recursive)
+
+def Main():
+    parser = argparse.ArgumentParser(description='Goes through files or directories specified on command line and renames files produced by GoPro cameras in a more usable and sortable way')
+    parser.add_argument('-n', '--dry-run', action='store_true', help='do not actually rename anything')
+    parser.add_argument('-f', '--force', action='store_true', help='rename even if target file exists')
+    parser.add_argument('-v', '--verbose', action='store_true', help='print actions to stderr')
+    parser.add_argument('-r', '-R', '--recursive', action='store_true', help='process subdirectories recursively')
+    parser.add_argument('paths', metavar='path', nargs='+', help='file or directory to process')
+
+    args = parser.parse_args()
+
+    for path in args.paths:
+        Process(path, args.dry_run, args.force, args.verbose, args.recursive)
+
+    return 0
+
+if __name__ == '__main__':
+    os.sys.exit(Main())
