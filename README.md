@@ -1,6 +1,7 @@
 # gopro-rename
 
 [![Build Status](https://travis-ci.org/AMDmi3/gopro-rename.svg?branch=master)](https://travis-ci.org/AMDmi3/gopro-rename)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bb9c96a4c5d548a893b0955e1893234d)](https://www.codacy.com/app/AMDmi3/gopro-rename)
 
 [GoPro](https://gopro.com) action cameras have totally inconvenient [file naming convention](https://gopro.com/support/articles/hero3-and-hero3-file-naming-convention), which is, for instance, completely unfriendly to sorting. Example:
 
