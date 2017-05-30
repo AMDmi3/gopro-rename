@@ -37,31 +37,56 @@ init() {
 echo "===> work on files"
 init $TESTDIR
 ./gopro-rename -v $TESTDIR/*
-[ "$(ls $TESTDIR)" = "$OUTFILES" ] && echo OK || { echo "Failed"; exit 1; }
+if [ "$(ls $TESTDIR)" = "$OUTFILES" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
 cleanup $TESTDIR
 
 echo "===> work on dirs"
 init $TESTDIR
 ./gopro-rename -v $TESTDIR
-[ "$(ls $TESTDIR)" = "$OUTFILES" ] && echo OK || { echo "Failed"; exit 1; }
+if [ "$(ls $TESTDIR)" = "$OUTFILES" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
 cleanup $TESTDIR
 
 echo "===> dry-run mode"
 init $TESTDIR
 ./gopro-rename -n $TESTDIR
-[ "$(ls $TESTDIR)" = "$INFILES" ] && echo OK || { echo "Failed"; exit 1; }
+if [ "$(ls $TESTDIR)" = "$INFILES" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
 cleanup $TESTDIR
 
 echo "===> non-recursive"
 init $TESTDIR/subdir
 ./gopro-rename -v $TESTDIR
-[ "$(ls $TESTDIR/subdir)" = "$INFILES" ] && echo OK || { echo "Failed"; exit 1; }
+if [ "$(ls $TESTDIR/subdir)" = "$INFILES" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
 cleanup $TESTDIR
 
 echo "===> recursive"
 init $TESTDIR/subdir
 ./gopro-rename -vr $TESTDIR
-[ "$(ls $TESTDIR/subdir)" = "$OUTFILES" ] && echo OK || { echo "Failed"; exit 1; }
+if [ "$(ls $TESTDIR/subdir)" = "$OUTFILES" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
 cleanup $TESTDIR
 
 echo "===> safety"
@@ -78,5 +103,10 @@ cleanup $TESTDIR
 echo "===> force"
 init $TESTDIR
 touch $TESTDIR/GoPro_0001_01.MP4
-./gopro-rename -vf $TESTDIR && echo OK || { echo "Failed"; exit 1; }
+if ./gopro-rename -vf $TESTDIR; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
 cleanup $TESTDIR
