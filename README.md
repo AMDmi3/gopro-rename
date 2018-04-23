@@ -49,7 +49,7 @@ Additional flags:
 * **-f**, **--force** - rename file even if destination path exists
 * **-v**, **--verbose** - print performed renames to stderr
 * **-r**, **-R**, **--recursive** - process subdirectories recursively
-* **-p**, **--prefix** - set the filename prefix instead of the default "GoPro"
+* **-p**, **--prefix** - set the filename prefix instead of the default "GoPro_"
 
 ## Requirements
 
