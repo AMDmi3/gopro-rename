@@ -121,7 +121,7 @@ cleanup $TESTDIR
 
 echo "===> optional prefix"
 init $TESTDIR
-./gopro-rename -p AAA $TESTDIR
+./gopro-rename -vp AAA $TESTDIR
 if [ "$(ls $TESTDIR)" = "$OUTFILES_WITH_PREFIX" ]; then
     echo OK
 else
