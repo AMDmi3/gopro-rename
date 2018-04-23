@@ -69,7 +69,7 @@ def Main():
     parser.add_argument('-f', '--force', action='store_true', help='rename even if target file exists')
     parser.add_argument('-v', '--verbose', action='store_true', help='print actions to stderr')
     parser.add_argument('-r', '-R', '--recursive', action='store_true', help='process subdirectories recursively')
-    parser.add_argument('-p', '--prefix', nargs='?', default='GoPro_', help='optional prefix instead of the default "GoPro_"')
+    parser.add_argument('-p', '--prefix', nargs='?', default='GoPro_', help='prefix for renamed files')
     parser.add_argument('paths', metavar='path', nargs='+', help='file or directory to process')
 
     args = parser.parse_args()
