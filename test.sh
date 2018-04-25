@@ -104,7 +104,7 @@ if ./gopro-rename $TESTDIR; then
 	echo Failed
 	exit 1
 else
-	echo OK
+	echo "OK (got exception as expected)"
 fi
 cleanup $TESTDIR
 
