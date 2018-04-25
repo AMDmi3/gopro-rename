@@ -22,6 +22,14 @@ GoPro_0002_01.MP4
 GoPro_0003_00.MP4
 NOTGOPRO.MP4"
 
+OUTFILES_WITH_PREFIX="AAA0001_00.MP4
+AAA0001_01.MP4
+AAA0001_02.MP4
+AAA0002_00.MP4
+AAA0002_01.MP4
+AAA0003_00.MP4
+NOTGOPRO.MP4"
+
 cleanup() {
 	rm -rf $1
 }
@@ -104,6 +112,17 @@ echo "===> force"
 init $TESTDIR
 touch $TESTDIR/GoPro_0001_01.MP4
 if ./gopro-rename -vf $TESTDIR; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
+cleanup $TESTDIR
+
+echo "===> optional prefix"
+init $TESTDIR
+./gopro-rename -vp AAA $TESTDIR
+if [ "$(ls $TESTDIR)" = "$OUTFILES_WITH_PREFIX" ]; then
     echo OK
 else
     echo "Failed"
