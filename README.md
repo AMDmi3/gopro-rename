@@ -40,7 +40,7 @@ script does not ascend into subdirectories, but this behavior may
 be changed by **-r** flag). Processing involves checking whether a
 file name looks like it has been produced by GoPro and renaming the
 file (unless **-n** flag was specified), with an option to set the
-file prefix instead of a default "GoPro". The files which do not
+file prefix instead of a default "GoPro_". The files which do not
 match GoPro file naming convention are silently ignored.
 
 Additional flags:
