@@ -59,6 +59,10 @@ Only python interpreter is required, both python 2.x and 3.x are supported
 
 * [Dmitry Marakasov](https://github.com/AMDmi3) <amdmi3@amdmi3.ru>
 
+## Contributors
+
+* [Manu Erwin](https://github.com/manuerwin)
+
 ## License
 
 MIT, see COPYING.
