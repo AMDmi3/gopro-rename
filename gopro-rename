@@ -21,11 +21,13 @@
 # THE SOFTWARE.
 
 from __future__ import print_function
+
 import argparse
 import ntpath
 import os
 import re
 import sys
+
 
 def GetRenamedFilename(path, args):
     dir, file = ntpath.split(path)
@@ -40,6 +42,7 @@ def GetRenamedFilename(path, args):
 
     return path
 
+
 def TryRename(path, args):
     target_path = GetRenamedFilename(path, args)
 
@@ -50,6 +53,7 @@ def TryRename(path, args):
             raise RuntimeError('target path %s exists' % target_path)
         if not args.dry_run:
             os.rename(path, target_path)
+
 
 def Process(path, args):
     if os.path.isfile(path):
@@ -62,6 +66,7 @@ def Process(path, args):
                 TryRename(os.path.join(path, entry), args)
             elif args.recursive and os.path.isdir(os.path.join(path, entry)):
                 Process(os.path.join(path, entry), args)
+
 
 def Main():
     parser = argparse.ArgumentParser(description='Goes through files or directories specified on command line and renames files produced by GoPro cameras in a more usable and sortable way')
@@ -77,6 +82,7 @@ def Main():
     for path in args.paths:
         Process(path, args)
     return 0
+
 
 if __name__ == '__main__':
     os.sys.exit(Main())
