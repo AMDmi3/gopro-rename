@@ -30,7 +30,7 @@ GoPro_0003_01.MP4
 ## Usage
 
 ```
-gopro-rename [-nfvrp] path [path ...]
+gopro-rename [-nfvr] [-p prefix] path [path ...]
 ```
 
 The program takes arbitrary number of paths as arguments. If file
