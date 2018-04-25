@@ -29,7 +29,7 @@ import re
 import sys
 
 
-def GetRenamedFilename(path, args):
+def get_transformed_filename(path, args):
     dir, file = ntpath.split(path)
 
     match = re.match('GOPR(\d{4})(\..*)', file)
@@ -43,8 +43,8 @@ def GetRenamedFilename(path, args):
     return path
 
 
-def TryRename(path, args):
-    target_path = GetRenamedFilename(path, args)
+def try_rename_file(path, args):
+    target_path = get_transformed_filename(path, args)
 
     if target_path != path:
         if args.dry_run or args.verbose:
@@ -55,20 +55,20 @@ def TryRename(path, args):
             os.rename(path, target_path)
 
 
-def Process(path, args):
+def process_path(path, args):
     if os.path.isfile(path):
-        TryRename(path, args)
+        try_rename_file(path, args)
     elif os.path.isdir(path):
         for entry in os.listdir(path):
             if entry == '.' or entry == '..':
                 pass
             elif os.path.isfile(os.path.join(path, entry)):
-                TryRename(os.path.join(path, entry), args)
+                try_rename_file(os.path.join(path, entry), args)
             elif args.recursive and os.path.isdir(os.path.join(path, entry)):
-                Process(os.path.join(path, entry), args)
+                process_path(os.path.join(path, entry), args)
 
 
-def Main():
+def main():
     parser = argparse.ArgumentParser(description='Goes through files or directories specified on command line and renames files produced by GoPro cameras in a more usable and sortable way')
     parser.add_argument('-n', '--dry-run', action='store_true', help='do not actually rename anything')
     parser.add_argument('-f', '--force', action='store_true', help='rename even if target file exists')
@@ -80,9 +80,9 @@ def Main():
     args = parser.parse_args()
 
     for path in args.paths:
-        Process(path, args)
+        process_path(path, args)
     return 0
 
 
 if __name__ == '__main__':
-    os.sys.exit(Main())
+    os.sys.exit(main())
