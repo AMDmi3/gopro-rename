@@ -30,15 +30,23 @@ import sys
 
 
 def get_transformed_filename(path, args):
-    dir, file = ntpath.split(path)
+    dir, file = os.path.split(path)
+
+    prefix = args.prefix
+    if args.directory:
+        index = 1
+        if dir.count(os.sep) == 0:
+            index = 0            
+        dirname = dir.rsplit(os.sep, 1)[index]
+        prefix = dirname + '_'
 
     match = re.match('GOPR(\d{4})(\..*)', file)
     if match:
-        return os.path.join(dir, '%s%04d_%02d%s' % (args.prefix, int(match.group(1)), 0, match.group(2)))
+        return os.path.join(dir, '%s%04d_%02d%s' % (prefix, int(match.group(1)), 0, match.group(2)))
 
     match = re.match('GP(\d{2})(\d{4})(\..*)', file)
     if match:
-        return os.path.join(dir, '%s%04d_%02d%s' % (args.prefix, int(match.group(2)), int(match.group(1)), match.group(3)))
+        return os.path.join(dir, '%s%04d_%02d%s' % (prefix, int(match.group(2)), int(match.group(1)), match.group(3)))
 
     return path
 
@@ -74,7 +82,9 @@ def main():
     parser.add_argument('-f', '--force', action='store_true', help='rename even if target file exists')
     parser.add_argument('-v', '--verbose', action='store_true', help='print actions to stderr')
     parser.add_argument('-r', '-R', '--recursive', action='store_true', help='process subdirectories recursively')
-    parser.add_argument('-p', '--prefix', nargs='?', default='GoPro_', help='prefix for renamed files')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-d', '--directory', action='store_true', help='use directory name as filename prefix')
+    group.add_argument('-p', '--prefix', nargs='?', default='GoPro_', help='prefix for renamed files')
     parser.add_argument('paths', metavar='path', nargs='+', help='file or directory to process')
 
     args = parser.parse_args()

@@ -30,6 +30,14 @@ AAA0002_01.MP4
 AAA0003_00.MP4
 NOTGOPRO.MP4"
 
+OUTFILES_WITH_DIRECTORYNAME_PREFIX="NOTGOPRO.MP4
+testdir_0001_00.MP4
+testdir_0001_01.MP4
+testdir_0001_02.MP4
+testdir_0002_00.MP4
+testdir_0002_01.MP4
+testdir_0003_00.MP4"
+
 cleanup() {
 	rm -rf $1
 }
@@ -123,6 +131,27 @@ echo "===> optional prefix"
 init $TESTDIR
 ./gopro-rename -vp AAA $TESTDIR
 if [ "$(ls $TESTDIR)" = "$OUTFILES_WITH_PREFIX" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
+cleanup $TESTDIR
+
+echo "===> mutual exclusion test for prefix vs directory options"
+init $TESTDIR
+if ./gopro-rename -vdp AAA $TESTDIR; then
+	echo Failed
+	exit 1
+else
+	echo "OK (got exception as expected)"
+fi
+cleanup $TESTDIR
+
+echo "===> directory name as prefix"
+init $TESTDIR
+./gopro-rename -vd $TESTDIR
+if [ "$(ls $TESTDIR)" = "$OUTFILES_WITH_DIRECTORYNAME_PREFIX" ]; then
     echo OK
 else
     echo "Failed"

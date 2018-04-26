@@ -30,7 +30,7 @@ GoPro_0003_01.MP4
 ## Usage
 
 ```
-gopro-rename [-nfvr] [-p prefix] path [path ...]
+gopro-rename [-nfvr] [-d | [-p prefix]] path [path ...]
 ```
 
 The program takes arbitrary number of paths as arguments. If file
@@ -39,9 +39,11 @@ all files in the given directory are processed (by default the
 script does not ascend into subdirectories, but this behavior may
 be changed by **-r** flag). Processing involves checking whether a
 file name looks like it has been produced by GoPro and renaming the
-file (unless **-n** flag was specified), with an option to set the
-file prefix instead of a default "GoPro_". The files which do not
-match GoPro file naming convention are silently ignored.
+file (unless **-n** flag was specified).
+The default file prefix is "GoPro_", however this can be overridden
+with either the directory name (using the **-d** flag) or specific text
+(using the **-p** flag). The files which do not match GoPro file naming
+convention are silently ignored.
 
 Additional flags:
 
@@ -49,7 +51,8 @@ Additional flags:
 * **-f**, **--force** - rename file even if destination path exists
 * **-v**, **--verbose** - print performed renames to stderr
 * **-r**, **-R**, **--recursive** - process subdirectories recursively
-* **-p**, **--prefix** - set the filename prefix instead of the default "GoPro_"
+* **-d**, **--directory** - use the directory name as filename prefix instead of the default. Cannot be used with --prefix option.
+* **-p**, **--prefix** - set the filename prefix instead of the default. Cannot be used with --directory option.
 
 ## Requirements
 
