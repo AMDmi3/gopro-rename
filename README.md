@@ -54,6 +54,30 @@ Additional flags:
 * **-d**, **--directory** - use the directory name as filename prefix instead of the default. Cannot be used with --prefix option.
 * **-p**, **--prefix** - set the filename prefix instead of the default. Cannot be used with --directory option.
 
+Example of **-d** option with directory name of 'testDir'
+
+```
+testDir\GOPR0001.MP4 # video 1 start
+testDir\GOPR0002.MP4
+testDir\GOPR0003.MP4
+testDir\GP010001.MP4 # video 1 continued
+testDir\GP010002.MP4
+testDir\GP010003.MP4
+testDir\GP020001.MP4 # video 1 last part
+```
+
+Files are renamed as follows:
+
+```
+testDir\testDir_0001_00.MP4 # video 1 start
+testDir\testDir_0001_01.MP4 # video 1 continued
+testDir\testDir_0001_02.MP4 # video 1 last part
+testDir\testDir_0002_00.MP4
+testDir\testDir_0002_01.MP4
+testDir\testDir_0003_00.MP4
+testDir\testDir_0003_01.MP4
+```
+
 ## Requirements
 
 Only python interpreter is required, both python 2.x and 3.x are supported
