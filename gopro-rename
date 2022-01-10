@@ -36,7 +36,7 @@ def get_transformed_filename(path, args):
     if match:
         return os.path.join(dir, '%s%04d_%02d%s' % (args.prefix, int(match.group(1)), 0, match.group(2)))
 
-    match = re.match('GP(\d{2})(\d{4})(\..*)', file)
+    match = re.match('G[PH](\d{2})(\d{4})(\..*)', file)
     if match:
         return os.path.join(dir, '%s%04d_%02d%s' % (args.prefix, int(match.group(2)), int(match.group(1)), match.group(3)))
 
