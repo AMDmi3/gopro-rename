@@ -53,7 +53,7 @@ Additional flags:
 
 ## Requirements
 
-Only python interpreter is required, both python 2.x and 3.x are supported
+Only python interpreter is required, of version 3.8 or higher
 
 ## Author
 
