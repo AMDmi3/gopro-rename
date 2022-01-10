@@ -23,22 +23,19 @@
 from __future__ import print_function
 
 import argparse
-import ntpath
 import os
 import re
 import sys
 
 
 def get_transformed_filename(path: str, args: argparse.Namespace) -> str:
-    dir, file = ntpath.split(path)
+    dirname, basename = os.path.split(path)
 
-    match = re.match('GOPR(\d{4})(\..*)', file)
-    if match:
-        return os.path.join(dir, '%s%04d_%02d%s' % (args.prefix, int(match.group(1)), 0, match.group(2)))
+    if match := re.match(r'GOPR(\d{4})(\..*)', basename):
+        return os.path.join(dirname, f'{args.prefix}{int(match[1]):04}_00{match[2]}')
 
-    match = re.match('G[PH](\d{2})(\d{4})(\..*)', file)
-    if match:
-        return os.path.join(dir, '%s%04d_%02d%s' % (args.prefix, int(match.group(2)), int(match.group(1)), match.group(3)))
+    if match := re.match(r'G[PH](\d{2})(\d{4})(\..*)', basename):
+        return os.path.join(dirname, f'{args.prefix}{int(match[2]):04}_{int(match[1]):02}{match[3]}')
 
     return path
 
@@ -48,9 +45,9 @@ def try_rename_file(path: str, args: argparse.Namespace) -> None:
 
     if target_path != path:
         if args.dry_run or args.verbose:
-            print('%s -> %s' % (path, target_path), file=sys.stderr)
+            print(f'{path} -> {target_path}', file=sys.stderr)
         if os.path.exists(target_path) and not args.force:
-            raise RuntimeError('target path %s exists' % target_path)
+            raise RuntimeError(f'target path {target_path} exists')
         if not args.dry_run:
             os.rename(path, target_path)
 
@@ -61,7 +58,7 @@ def process_path(path: str, args: argparse.Namespace) -> None:
     elif os.path.isdir(path):
         for entry in os.listdir(path):
             if entry == '.' or entry == '..':
-                pass
+                continue
             elif os.path.isfile(os.path.join(path, entry)):
                 try_rename_file(os.path.join(path, entry), args)
             elif args.recursive and os.path.isdir(os.path.join(path, entry)):
@@ -85,4 +82,4 @@ def main() -> int:
 
 
 if __name__ == '__main__':
-    os.sys.exit(main())
+    sys.exit(main())
