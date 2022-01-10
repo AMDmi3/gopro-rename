@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 1.2.0 - 2022-01-10
 * Update GoPro filename patterns
+* Modernize code, switch to python 3.x
 
 ## 1.1.0 - 2018-04-25
 * Implemented `--prefix` option to modify resulting files prefix
