@@ -33,7 +33,7 @@ def get_transformed_filename(path: str, args: argparse.Namespace) -> str:
     if match:
         return os.path.join(dirname, f'{args.prefix}{int(match[1]):04}_00{match[2]}')
 
-    match = re.match(r'G[PH](\d{2})(\d{4})(\..*)', basename)
+    match = re.match(r'G[PHXL](\d{2})(\d{4})(\..*)', basename)
     if match:
         return os.path.join(dirname, f'{args.prefix}{int(match[2]):04}_{int(match[1]):02}{match[3]}')
 
