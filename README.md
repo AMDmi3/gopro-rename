@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/AMDmi3/gopro-rename/actions/workflows/ci.yml/badge.svg)](https://github.com/AMDmi3/gopro-rename/actions/workflows/ci.yml)
 
-[GoPro](https://gopro.com) action cameras have totally inconvenient [file naming convention](https://gopro.com/support/articles/hero3-and-hero3-file-naming-convention), which is, for instance, completely unfriendly to sorting. Example:
+[GoPro](https://gopro.com) action cameras have totally inconvenient [file naming convention](https://community.gopro.com/s/article/GoPro-Camera-File-Naming-Convention), which is, for instance, completely unfriendly to sorting. Example:
 
 ```
 GOPR0001.MP4 # video 1 start
