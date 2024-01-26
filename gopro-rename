@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
-# Copyright (c) 2016-2018 Dmitry Marakasov <amdmi3@amdmi3.ru>
+# Copyright (c) 2016-2018,2022 Dmitry Marakasov <amdmi3@amdmi3.ru>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,65 +20,62 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from __future__ import print_function
-
 import argparse
-import ntpath
 import os
 import re
 import sys
 
 
-def get_transformed_filename(path, args):
-    dir, file = os.path.split(path)
+def get_transformed_filename(path: str, args: argparse.Namespace) -> str:
+    dirname, basename = os.path.split(path)
 
     prefix = args.prefix
     if args.directory:
         index = 1
-        if dir.count(os.sep) == 0:
+        if dirname.count(os.sep) == 0:
             index = 0            
-        dirname = dir.rsplit(os.sep, 1)[index]
-        prefix = dirname + '_'
+        directoryname = dirname.rsplit(os.sep, 1)[index]
+        prefix = directoryname + '_'
 
-    match = re.match('GOPR(\d{4})(\..*)', file)
+    match = re.match(r'GOPR(\d{4})(\..*)', basename)
     if match:
-        return os.path.join(dir, '%s%04d_%02d%s' % (prefix, int(match.group(1)), 0, match.group(2)))
+        return os.path.join(dirname, f'{prefix}{int(match[1]):04}_00{match[2]}')
 
-    match = re.match('GP(\d{2})(\d{4})(\..*)', file)
+    match = re.match(r'G[PHXL](\d{2})(\d{4})(\..*)', basename)
     if match:
-        return os.path.join(dir, '%s%04d_%02d%s' % (prefix, int(match.group(2)), int(match.group(1)), match.group(3)))
+        return os.path.join(dirname, f'{prefix}{int(match[2]):04}_{int(match[1]):02}{match[3]}')
 
     return path
 
 
-def try_rename_file(path, args):
+def try_rename_file(path: str, args: argparse.Namespace) -> None:
     target_path = get_transformed_filename(path, args)
 
     if target_path != path:
         if args.dry_run or args.verbose:
-            print('%s -> %s' % (path, target_path), file=sys.stderr)
+            print(f'{path} -> {target_path}', file=sys.stderr)
         if os.path.exists(target_path) and not args.force:
-            raise RuntimeError('target path %s exists' % target_path)
+            raise RuntimeError(f'target path {target_path} exists')
         if not args.dry_run:
             os.rename(path, target_path)
 
 
-def process_path(path, args):
+def process_path(path: str, args: argparse.Namespace) -> None:
     if os.path.isfile(path):
         try_rename_file(path, args)
     elif os.path.isdir(path):
         for entry in os.listdir(path):
             if entry == '.' or entry == '..':
-                pass
+                continue
             elif os.path.isfile(os.path.join(path, entry)):
                 try_rename_file(os.path.join(path, entry), args)
             elif args.recursive and os.path.isdir(os.path.join(path, entry)):
                 process_path(os.path.join(path, entry), args)
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(description='Goes through files or directories specified on command line and renames files produced by GoPro cameras in a more usable and sortable way')
-    parser.add_argument('-n', '--dry-run', action='store_true', help='do not actually rename anything')
+    parser.add_argument('-n', '--dry_run', action='store_true', help='do not actually rename anything')
     parser.add_argument('-f', '--force', action='store_true', help='rename even if target file exists')
     parser.add_argument('-v', '--verbose', action='store_true', help='print actions to stderr')
     parser.add_argument('-r', '-R', '--recursive', action='store_true', help='process subdirectories recursively')
@@ -95,4 +92,4 @@ def main():
 
 
 if __name__ == '__main__':
-    os.sys.exit(main())
+    sys.exit(main())

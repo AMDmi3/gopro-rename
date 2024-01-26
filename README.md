@@ -1,9 +1,8 @@
 # gopro-rename
 
-[![Build Status](https://travis-ci.org/AMDmi3/gopro-rename.svg?branch=master)](https://travis-ci.org/AMDmi3/gopro-rename)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bb9c96a4c5d548a893b0955e1893234d)](https://www.codacy.com/app/AMDmi3/gopro-rename)
+[![CI](https://github.com/AMDmi3/gopro-rename/actions/workflows/ci.yml/badge.svg)](https://github.com/AMDmi3/gopro-rename/actions/workflows/ci.yml)
 
-[GoPro](https://gopro.com) action cameras have totally inconvenient [file naming convention](https://gopro.com/support/articles/hero3-and-hero3-file-naming-convention), which is, for instance, completely unfriendly to sorting. Example:
+[GoPro](https://gopro.com) action cameras have totally inconvenient [file naming convention](https://community.gopro.com/s/article/GoPro-Camera-File-Naming-Convention), which is, for instance, completely unfriendly to sorting. Example:
 
 ```
 GOPR0001.MP4 # video 1 start
@@ -15,7 +14,7 @@ GP010003.MP4
 GP020001.MP4 # video 1 last part
 ```
 
-This script renames files an a more sane way:
+This script renames files in a more sane way:
 
 ```
 GoPro_0001_00.MP4 # video 1 start
@@ -80,7 +79,7 @@ testDir\testDir_0003_01.MP4
 
 ## Requirements
 
-Only python interpreter is required, both python 2.x and 3.x are supported
+Only python interpreter is required, of version 3.6 or higher
 
 ## Author
 
@@ -88,7 +87,7 @@ Only python interpreter is required, both python 2.x and 3.x are supported
 
 ## Contributors
 
-* [Manu Erwin](https://github.com/manuerwin)
+* See GitHub https://github.com/AMDmi3/gopro-rename/graphs/contributors
 
 ## License
 
