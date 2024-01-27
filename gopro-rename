@@ -33,7 +33,7 @@ def get_transformed_filename(path: str, args: argparse.Namespace) -> str:
     if args.directory:
         index = 1
         if dirname.count(os.sep) == 0:
-            index = 0            
+            index = 0
         directoryname = dirname.rsplit(os.sep, 1)[index]
         prefix = directoryname + '_'
 
