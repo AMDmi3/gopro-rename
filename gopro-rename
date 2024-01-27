@@ -29,13 +29,21 @@ import sys
 def get_transformed_filename(path: str, args: argparse.Namespace) -> str:
     dirname, basename = os.path.split(path)
 
+    prefix = args.prefix
+    if args.directory:
+        index = 1
+        if dirname.count(os.sep) == 0:
+            index = 0
+        directoryname = dirname.rsplit(os.sep, 1)[index]
+        prefix = directoryname + '_'
+
     match = re.match(r'GOPR(\d{4})(\..*)', basename)
     if match:
-        return os.path.join(dirname, f'{args.prefix}{int(match[1]):04}_00{match[2]}')
+        return os.path.join(dirname, f'{prefix}{int(match[1]):04}_00{match[2]}')
 
     match = re.match(r'G[PHXL](\d{2})(\d{4})(\..*)', basename)
     if match:
-        return os.path.join(dirname, f'{args.prefix}{int(match[2]):04}_{int(match[1]):02}{match[3]}')
+        return os.path.join(dirname, f'{prefix}{int(match[2]):04}_{int(match[1]):02}{match[3]}')
 
     return path
 
@@ -67,11 +75,13 @@ def process_path(path: str, args: argparse.Namespace) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description='Goes through files or directories specified on command line and renames files produced by GoPro cameras in a more usable and sortable way')
-    parser.add_argument('-n', '--dry-run', action='store_true', help='do not actually rename anything')
+    parser.add_argument('-n', '--dry_run', action='store_true', help='do not actually rename anything')
     parser.add_argument('-f', '--force', action='store_true', help='rename even if target file exists')
     parser.add_argument('-v', '--verbose', action='store_true', help='print actions to stderr')
     parser.add_argument('-r', '-R', '--recursive', action='store_true', help='process subdirectories recursively')
-    parser.add_argument('-p', '--prefix', nargs='?', default='GoPro_', help='prefix for renamed files')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-d', '--directory', action='store_true', help='use directory name as filename prefix')
+    group.add_argument('-p', '--prefix', nargs='?', default='GoPro_', help='prefix for renamed files')
     parser.add_argument('paths', metavar='path', nargs='+', help='file or directory to process')
 
     args = parser.parse_args()

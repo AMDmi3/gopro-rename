@@ -30,6 +30,14 @@ AAA0002_01.MP4
 AAA0003_00.MP4
 NOTGOPRO.MP4"
 
+OUTFILES_WITH_DIRECTORYNAME_PREFIX="NOTGOPRO.MP4
+testdir_0001_00.MP4
+testdir_0001_01.MP4
+testdir_0001_02.MP4
+testdir_0002_00.MP4
+testdir_0002_01.MP4
+testdir_0003_00.MP4"
+
 cleanup() {
 	rm -rf $1
 }
@@ -64,11 +72,12 @@ else
 fi
 cleanup $TESTDIR
 
-echo "===> dry-run mode"
+echo "===> dry_run mode"
 init $TESTDIR
 ./gopro-rename -n $TESTDIR
 if [ "$(ls $TESTDIR)" = "$INFILES" ]; then
-    echo OK
+    echo "OK (nothing processed, see below)"
+    ls $TESTDIR
 else
     echo "Failed"
     exit 1
@@ -79,7 +88,7 @@ echo "===> non-recursive"
 init $TESTDIR/subdir
 ./gopro-rename -v $TESTDIR
 if [ "$(ls $TESTDIR/subdir)" = "$INFILES" ]; then
-    echo OK
+    echo "OK (nothing processed in sub directory)"
 else
     echo "Failed"
     exit 1
@@ -100,7 +109,7 @@ cleanup $TESTDIR
 echo "===> safety"
 init $TESTDIR
 touch $TESTDIR/GoPro_0001_01.MP4
-if ./gopro-rename $TESTDIR; then
+if ./gopro-rename -v $TESTDIR; then
 	echo Failed
 	exit 1
 else
@@ -127,5 +136,26 @@ if [ "$(ls $TESTDIR)" = "$OUTFILES_WITH_PREFIX" ]; then
 else
     echo "Failed"
     exit 1
+fi
+cleanup $TESTDIR
+
+echo "===> directory name as prefix"
+init $TESTDIR
+./gopro-rename -vd $TESTDIR
+if [ "$(ls $TESTDIR)" = "$OUTFILES_WITH_DIRECTORYNAME_PREFIX" ]; then
+    echo OK
+else
+    echo "Failed"
+    exit 1
+fi
+cleanup $TESTDIR
+
+echo "===> mutual exclusion test for prefix vs directory options"
+init $TESTDIR
+if ./gopro-rename -vdp AAA $TESTDIR; then
+	echo Failed
+	exit 1
+else
+	echo "OK (got exception as expected)"
 fi
 cleanup $TESTDIR

@@ -14,7 +14,7 @@ GP010003.MP4
 GP020001.MP4 # video 1 last part
 ```
 
-This script renames files an a more sane way:
+This script renames files in a more sane way:
 
 ```
 GoPro_0001_00.MP4 # video 1 start
@@ -29,7 +29,7 @@ GoPro_0003_01.MP4
 ## Usage
 
 ```
-gopro-rename [-nfvr] [-p prefix] path [path ...]
+gopro-rename [-nfvr] [-d | [-p prefix]] path [path ...]
 ```
 
 The program takes arbitrary number of paths as arguments. If file
@@ -38,9 +38,11 @@ all files in the given directory are processed (by default the
 script does not ascend into subdirectories, but this behavior may
 be changed by **-r** flag). Processing involves checking whether a
 file name looks like it has been produced by GoPro and renaming the
-file (unless **-n** flag was specified), with an option to set the
-file prefix instead of a default "GoPro_". The files which do not
-match GoPro file naming convention are silently ignored.
+file (unless **-n** flag was specified).
+The default file prefix is "GoPro_", however this can be overridden
+with either the directory name (using the **-d** flag) or specific text
+(using the **-p** flag). The files which do not match GoPro file naming
+convention are silently ignored.
 
 Additional flags:
 
@@ -48,7 +50,32 @@ Additional flags:
 * **-f**, **--force** - rename file even if destination path exists
 * **-v**, **--verbose** - print performed renames to stderr
 * **-r**, **-R**, **--recursive** - process subdirectories recursively
-* **-p**, **--prefix** - set the filename prefix instead of the default "GoPro_"
+* **-d**, **--directory** - use the directory name as filename prefix instead of the default. Cannot be used with --prefix option.
+* **-p**, **--prefix** - set the filename prefix instead of the default. Cannot be used with --directory option.
+
+Example of **-d** option with directory name of 'testDir'
+
+```
+testDir\GOPR0001.MP4 # video 1 start
+testDir\GOPR0002.MP4
+testDir\GOPR0003.MP4
+testDir\GP010001.MP4 # video 1 continued
+testDir\GP010002.MP4
+testDir\GP010003.MP4
+testDir\GP020001.MP4 # video 1 last part
+```
+
+Files are renamed as follows:
+
+```
+testDir\testDir_0001_00.MP4 # video 1 start
+testDir\testDir_0001_01.MP4 # video 1 continued
+testDir\testDir_0001_02.MP4 # video 1 last part
+testDir\testDir_0002_00.MP4
+testDir\testDir_0002_01.MP4
+testDir\testDir_0003_00.MP4
+testDir\testDir_0003_01.MP4
+```
 
 ## Requirements
 
@@ -60,7 +87,7 @@ Only python interpreter is required, of version 3.6 or higher
 
 ## Contributors
 
-* [Manu Erwin](https://github.com/manuerwin)
+* See GitHub https://github.com/AMDmi3/gopro-rename/graphs/contributors
 
 ## License
 
